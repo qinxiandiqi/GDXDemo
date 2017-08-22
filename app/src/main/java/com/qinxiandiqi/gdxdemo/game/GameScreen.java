@@ -1,8 +1,8 @@
 package com.qinxiandiqi.gdxdemo.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,21 +18,29 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.Iterator;
 
 /**
+ * 游戏界面
  * Created by Jianan on 2017/8/22.
  */
-public class Drop extends ApplicationAdapter {
+public class GameScreen implements Screen {
+
+    private DropGame game;
+
     private Texture dropImage;
     private Texture bucketImage;
     private Sound dropSound;
     private Music rainMusic;
-    private SpriteBatch batch;
     private OrthographicCamera camera;
     private Rectangle bucket;
     private Array<Rectangle> raindrops;
     private long lastDropTime;
+    private int dropsGathered;
+
+    public GameScreen(DropGame game) {
+        this.game = game;
+    }
 
     @Override
-    public void create() {
+    public void show() {
         // load the images for the droplet and the bucket, 64x64 pixels each
         dropImage = new Texture(Gdx.files.internal("droplet.png"));
         bucketImage = new Texture(Gdx.files.internal("bucket.png"));
@@ -48,7 +56,6 @@ public class Drop extends ApplicationAdapter {
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        batch = new SpriteBatch();
 
         // create a Rectangle to logically represent the bucket
         bucket = new Rectangle();
@@ -58,7 +65,7 @@ public class Drop extends ApplicationAdapter {
         bucket.height = 64;
 
         // create the raindrops array and spawn the first raindrop
-        raindrops = new Array<Rectangle>();
+        raindrops = new Array<>();
         spawnRaindrop();
     }
 
@@ -73,7 +80,7 @@ public class Drop extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         // clear the screen with a dark blue color. The
         // arguments to glClearColor are the red, green
         // blue and alpha component in the range [0,1]
@@ -86,16 +93,17 @@ public class Drop extends ApplicationAdapter {
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
-        batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
 
         // begin a new batch and draw the bucket and
         // all drops
-        batch.begin();
-        batch.draw(bucketImage, bucket.x, bucket.y);
+        game.batch.begin();
+        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+        game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
         for(Rectangle raindrop: raindrops) {
-            batch.draw(dropImage, raindrop.x, raindrop.y);
+            game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
-        batch.end();
+        game.batch.end();
 
         // process user input
         if(Gdx.input.isTouched()) {
@@ -128,6 +136,7 @@ public class Drop extends ApplicationAdapter {
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
             if(raindrop.y + 64 < 0) iter.remove();
             if(raindrop.overlaps(bucket)) {
+                dropsGathered++;
                 dropSound.play();
                 iter.remove();
             }
@@ -135,12 +144,30 @@ public class Drop extends ApplicationAdapter {
     }
 
     @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
     public void dispose() {
-        // dispose of all the native resources
         dropImage.dispose();
         bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
-        batch.dispose();
     }
 }
