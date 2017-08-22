@@ -3,6 +3,7 @@ package com.qinxiandiqi.gdxdemo.game;
 import android.support.annotation.NonNull;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class StartScreen extends AbsScreen {
 
     private String text = "Hello World!!! ";
+    private Input.TextInputListener textInputListener;
 
     public StartScreen(@NonNull MainGame game) {
         super(game);
@@ -23,6 +25,7 @@ public class StartScreen extends AbsScreen {
     public void show() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        textInputListener = new StartTextInputListener();
     }
 
     @Override
@@ -36,6 +39,10 @@ public class StartScreen extends AbsScreen {
         game.batch.begin();
         game.font.draw(game.batch, text, 100, 150);
         game.batch.end();
+
+        if (Gdx.input.justTouched()) {
+            Gdx.input.getTextInput(textInputListener, "INPUT", text, "Please input text");
+        }
     }
 
     @Override
@@ -55,5 +62,17 @@ public class StartScreen extends AbsScreen {
 
     @Override
     public void dispose() {
+    }
+
+    private class StartTextInputListener implements Input.TextInputListener {
+        @Override
+        public void input(String text) {
+            StartScreen.this.text = text;
+        }
+
+        @Override
+        public void canceled() {
+
+        }
     }
 }
