@@ -1,25 +1,19 @@
 package com.qinxiandiqi.gdxdemo;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
-import com.qinxiandiqi.gdxdemo.game.GameFragment;
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.qinxiandiqi.gdxdemo.game.Drop;
 
-public class MainActivity extends AppCompatActivity implements AndroidFragmentApplication.Callbacks {
+public class MainActivity extends AndroidApplication {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GameFragment gameFragment = new GameFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(android.R.id.content, gameFragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void exit() {
-
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useAccelerometer = false;
+        config.useCompass = false;
+        initialize(new Drop(), config);
     }
 }
