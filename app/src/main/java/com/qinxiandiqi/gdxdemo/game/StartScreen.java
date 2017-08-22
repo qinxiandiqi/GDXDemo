@@ -11,13 +11,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  * 开始游戏界面
  * Created by Jianan on 2017/8/22.
  */
-public class StartScreen implements Screen {
+public class StartScreen extends AbsScreen {
 
-    DropGame game;
-    OrthographicCamera camera;
+    private String text = "Hello World!!! ";
 
-    public StartScreen(@NonNull DropGame game) {
-        this.game = game;
+    public StartScreen(@NonNull MainGame game) {
+        super(game);
     }
 
     @Override
@@ -35,13 +34,8 @@ public class StartScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+        game.font.draw(game.batch, text, 100, 150);
         game.batch.end();
-
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-        }
     }
 
     @Override
@@ -57,11 +51,6 @@ public class StartScreen implements Screen {
     @Override
     public void resume() {
 
-    }
-
-    @Override
-    public void hide() {
-        dispose();
     }
 
     @Override

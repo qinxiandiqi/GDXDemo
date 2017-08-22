@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Created by Jianan on 2017/8/22.
  */
-public class DropGame extends Game {
+public class MainGame extends Game {
 
     SpriteBatch batch;
     BitmapFont font;

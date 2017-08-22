@@ -20,6 +20,6 @@ public class GameFragment extends AndroidFragmentApplication {
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useAccelerometer = false;
         config.useCompass = false;
-        return initializeForView(new DropGame(), config);
+        return initializeForView(new MainGame(), config);
     }
 }
