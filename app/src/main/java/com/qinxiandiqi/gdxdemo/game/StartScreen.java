@@ -7,6 +7,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
  * 开始游戏界面
@@ -14,7 +16,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  */
 public class StartScreen extends AbsScreen {
 
-    private String text = "Hello World!!! ";
+    private BitmapFont bitmapFont;
+    private String text = "你好，中文!!! ";
     private Input.TextInputListener textInputListener;
 
     public StartScreen(@NonNull MainGame game) {
@@ -26,6 +29,7 @@ public class StartScreen extends AbsScreen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         textInputListener = new StartTextInputListener();
+        createFont();
     }
 
     @Override
@@ -37,6 +41,7 @@ public class StartScreen extends AbsScreen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        bitmapFont.draw(game.batch, text, 100, 200);
         game.font.draw(game.batch, text, 100, 150);
         game.batch.end();
 
@@ -68,11 +73,21 @@ public class StartScreen extends AbsScreen {
         @Override
         public void input(String text) {
             StartScreen.this.text = text;
+            createFont();
         }
 
         @Override
         public void canceled() {
 
         }
+    }
+
+    private void createFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("simkai.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 18;
+        parameter.characters = text;
+        bitmapFont = generator.generateFont(parameter);
+        generator.dispose();
     }
 }
