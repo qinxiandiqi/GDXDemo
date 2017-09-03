@@ -12,9 +12,10 @@ public class MainActivity extends AppCompatActivity implements AndroidFragmentAp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         GameFragment gameFragment = new GameFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(android.R.id.content, gameFragment);
+        transaction.replace(R.id.fl_content, gameFragment);
         transaction.commit();
     }
 
