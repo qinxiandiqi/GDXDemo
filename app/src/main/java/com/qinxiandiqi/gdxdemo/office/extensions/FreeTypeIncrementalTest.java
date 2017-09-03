@@ -45,11 +45,11 @@ public class FreeTypeIncrementalTest extends GdxTest {
 
 		FreeTypeFontGenerator.setMaxTextureSize(128);
 
-		generator = new FreeTypeFontGenerator(Gdx.files.internal("data/arial.ttf"));
+		generator = new FreeTypeFontGenerator(Gdx.files.internal("data/simkai.ttf"));
 
 		FreeTypeFontParameter param = new FreeTypeFontParameter();
 		param.incremental = true;
-		param.size = 24;
+		param.size = 60;
 		param.characters = "howdY\u0000";
 
 		FreeTypeBitmapFontData data = new FreeTypeBitmapFontData() {
